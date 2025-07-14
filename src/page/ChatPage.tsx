@@ -7,98 +7,88 @@ import { sendMessageToBot } from "service/ChatService";
 
 type Pending = null | "needQuestion";
 
-
 export default function ChatPage() {
-  const MGRID="MGR9280"
+  const MGRID = "MGR9280";
+
+  /* ---------- state ---------- */
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, role: "bot", text: "Hi! How can I help you today?" },
   ]);
   const [pending, setPending] = useState<Pending>(null);
 
-  /* ---------- scroll-to-bottom ---------- */
+  /* ---------- scrolling ---------- */
   const scrollRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
   }, [messages]);
 
-  /* ---------- helper to push messages ---------- */
-  const push = (role: "user" | "bot", text: string) =>
-    setMessages((prev) => [...prev, { id: Date.now(), role, text }]);
+  /* ---------- unique numeric IDs ---------- */
+  const seqRef = { current: Date.now() };
+  const nextId = () => ++seqRef.current;
+
+  /* ---------- helper to push & return id ---------- */
+  const push = (role: "user" | "bot", text: string): number => {
+    const id = nextId();
+    setMessages((prev) => [...prev, { id, role, text }]);
+    return id;
+  };
 
   /* ---------- main handler ---------- */
   const handleSend = async (text: string) => {
+    if (!text.trim()) return;
+
+    /* 0️⃣ user message */
     push("user", text);
 
-    /* 1️⃣  Was the bot waiting for an employee ID? */
+    /* 1️⃣ awaiting follow‑up question */
     if (pending === "needQuestion") {
       setPending(null);
+
       push("bot", `Generating Answer for your question **${text}** …`);
+      const thinkingId = push("bot", "🤖 Thinking…");
 
-      // placeholder while backend works
-      const thinkingId = Date.now();
-      setMessages((prev) => [
-        ...prev,
-        { id: thinkingId, role: "bot", text: "🤖 Thinking…" },
-      ]);
-      // call backend with required prompt
       const reply = await sendMessageToBot(text);
-
       setMessages((prev) =>
         prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
       );
       return;
     }
 
-    /* 2️⃣  First-turn: user asks for a report */
+    /* 2️⃣ trigger “ask question” flow */
     if (/ask\s+question/i.test(text)) {
       push("bot", "Sure — please provide the Question");
       setPending("needQuestion");
       return;
     }
-    if("Discrepancy Summary".toLocaleLowerCase()===text.toLocaleLowerCase()){
-      const thinkingId = Date.now();
-      const reply = await sendMessageToBot(`Discrepancy Summary ${MGRID}`);
-      setMessages((prev) =>
-        prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
-      );
+
+    /* 3️⃣ keyword shortcuts */
+    const lower = text.toLowerCase();
+    const keywordMap: Record<string, string> = {
+      "discrepancy summary": `Discrepancy Summary ${MGRID}`,
+      "generate mismatch chart": `Generate Mismatch Chart ${MGRID}`,
+      "show discrepancies": `Show Discrepancies ${MGRID}`,
+      "show employees": `Show Employees ${MGRID}`,
       
-    }
-    if("Generate Mismatch Chart".toLocaleLowerCase()===text.toLocaleLowerCase()){
-      const thinkingId = Date.now();
-      const reply = await sendMessageToBot(`Generate Mismatch Chart ${MGRID}`);
+    };
+
+    if (lower in keywordMap) {
+      const thinkingId = push("bot", "🤖 Thinking…");
+      const reply = await sendMessageToBot(keywordMap[lower]);
       setMessages((prev) =>
         prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
       );
-      
-    }
-    if("Show Discrepancies".toLocaleLowerCase()===text.toLocaleLowerCase()){
-      const thinkingId = Date.now();
-      const reply = await sendMessageToBot(`Show Discrepancies ${MGRID}`);
-      setMessages((prev) =>
-        prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
-      );
-    }
-    if("Show Employees".toLocaleLowerCase()===text.toLocaleLowerCase()){
-      const thinkingId = Date.now();
-      const reply = await sendMessageToBot(`Show Employees ${MGRID}`);
-      setMessages((prev) =>
-        prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
-      );
-      
+      return;
     }
 
-    /* 3️⃣  Normal flow: just relay to backend */
-    const thinkingId = Date.now();
-    setMessages((prev) => [
-      ...prev,
-      { id: thinkingId, role: "bot", text: "🤖 Thinking…" },
-    ]);
+    /* 4️⃣ default backend relay */
+    const thinkingId = push("bot", "🤖 Thinking…");
     const reply = await sendMessageToBot(text);
     setMessages((prev) =>
       prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
     );
   };
 
+  /* ---------- render ---------- */
   return (
     <>
       <div className="chat-messages" ref={scrollRef}>
