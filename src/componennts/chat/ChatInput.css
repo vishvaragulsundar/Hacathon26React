@@ -1,0 +1,48 @@
+/* Wrapper */
+.chat-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid #e0e0e0;
+    background-color: #fafafa;
+  }
+  
+  /* Text field */
+  .chat-input input {
+    flex: 1;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #d1d5db;   /* subtle gray */
+    border-radius: 6px;
+    outline: none;               /* remove blue outline */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .chat-input input:focus {
+    border-color: #00529b;       /* brand blue */
+    box-shadow: 0 0 0 3px rgba(0, 82, 155, 0.15);
+  }
+  
+  /* Send button */
+  .chat-input button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #00529b;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .chat-input button:hover {
+    background-color: #003d73;
+  }
+  
+  .chat-input button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  
