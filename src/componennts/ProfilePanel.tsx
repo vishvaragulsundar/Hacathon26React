@@ -5,7 +5,7 @@ export default function ProfilePanel({ onClose }: { onClose: () => void }) {
     name: "John Doe",
     email: "john.doe@example.com",
     role: "Admin",
-    employeeId: "EMP12345",
+    employeeId: "MGR9280",
   };
 
   return (

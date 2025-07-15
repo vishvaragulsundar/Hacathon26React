@@ -10,7 +10,7 @@ export default function Sidebar() {
     <>
       <div className={`sidebar ${isOpen ? "open" : "collapsed"}`}>
         <div>
-          <h2>💬 ChatBot</h2>
+          <h2>💬 ADM Assist</h2>
           <nav>
             <button className="navbar-button" onClick={() => navigate("/chat")}>
               Chat

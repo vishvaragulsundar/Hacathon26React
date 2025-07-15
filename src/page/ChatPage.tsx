@@ -3,7 +3,7 @@ import { Message } from "../types/message";
 import ChatBubble from "../componennts/chat/ChatBubbel";
 import ChatInput from "../componennts/chat/ChatInput";
 import RecommendedInputs from "componennts/chat/RecommendedInputs";
-import { sendMessageToBot } from "service/ChatService";
+import { fetchPolicyAnswer, sendMessageToBot } from "service/ChatService";
 
 type Pending = null | "needQuestion";
 
@@ -47,7 +47,7 @@ export default function ChatPage() {
       push("bot", `Generating Answer for your question **${text}** …`);
       const thinkingId = push("bot", "🤖 Thinking…");
 
-      const reply = await sendMessageToBot(text);
+      const reply = await fetchPolicyAnswer(text);
       setMessages((prev) =>
         prev.map((m) => (m.id === thinkingId ? { ...m, text: reply } : m)),
       );
@@ -68,7 +68,7 @@ export default function ChatPage() {
       "generate mismatch chart": `Generate Mismatch Chart ${MGRID}`,
       "show discrepancies": `Show Discrepancies ${MGRID}`,
       "show employees": `Show Employees ${MGRID}`,
-      
+      "generate mismatch report":`Generate Mismatch Report ${MGRID}`
     };
 
     if (lower in keywordMap) {

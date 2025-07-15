@@ -1,11 +1,11 @@
+import './RecommendedInputs.css'
 interface Props {
     onSelect: (message: string) => void;
   }
   
   const suggestions = [
-    "Discrepancy Summary",
+    "Generate Mismatch Report",
     "Generate Mismatch Chart",
-    "Show Discrepancies",
     "Show Employees",
     "Ask Question"
   ];
