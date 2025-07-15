@@ -55,7 +55,7 @@ export default function ChatPage() {
     }
 
     /* 2️⃣ trigger “ask question” flow */
-    if (/ask\s+question/i.test(text)) {
+    if (/Ask\s+HR/i.test(text)) {
       push("bot", "Sure — please provide the Question");
       setPending("needQuestion");
       return;
@@ -68,7 +68,10 @@ export default function ChatPage() {
       "generate mismatch chart": `Generate Mismatch Chart ${MGRID}`,
       "show discrepancies": `Show Discrepancies ${MGRID}`,
       "show employees": `Show Employees ${MGRID}`,
-      "generate mismatch report":`Generate Mismatch Report ${MGRID}`
+      "generate mismatch report":`Generate Mismatch Report ${MGRID}`,
+      "generate leave report":`Generate Leave Report ${MGRID}`,
+      "show leaves":`Show Leaves  ${MGRID}`,
+      "leave chart":`Leave Chart  ${MGRID}`
     };
 
     if (lower in keywordMap) {
@@ -97,7 +100,7 @@ export default function ChatPage() {
         ))}
       </div>
 
-      <RecommendedInputs onSelect={handleSend} />
+      <RecommendedInputs onSelect={handleSend} disableAll={pending === "needQuestion"} />
       <ChatInput onSend={handleSend} />
     </>
   );

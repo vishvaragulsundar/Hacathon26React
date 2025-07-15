@@ -1,55 +1,149 @@
 /* Basic sidebar layout */
 .sidebar {
-    height: 100vh;
-    background-color: #1e293b;
-    border-right: 1px solid #e0e0e0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 20px;
-    width: 250px;
-    transition: width 0.3s ease;
-    overflow: hidden;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
-    color: #e0e0e0;
-  }
-  
-  .sidebar.collapsed {
-    width: 1px;
-  }
-  
-  /* Hide text in collapsed state */
-  .sidebar.collapsed h2,
-  .sidebar.collapsed nav,
-  .sidebar.collapsed .sidebar-footer {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-  }
-  
-  /* Toggle button */
-  .sidebar-toggle {
-    position: absolute;
-    top: 20px;
-    left: 260px;
-    z-index: 1000;
-    padding: 6px 10px;
-    border: none;
-    background-color: #00529b;
-    color: white;
-    border-radius: 0 4px 4px 0;
-    cursor: pointer;
-    transition: left 0.3s ease;
-  }
-  
-  .sidebar.collapsed + .sidebar-toggle {
-    left: 10px;
-  }
-  
-  /* Footer text style */
-  .sidebar-footer {
-    font-size: 12px;
-    text-align: center;
-    color: #888;
-  }
-  
+  height: 100vh;
+  background-color: #1e293b;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  color: #e0e0e0;
+}
+
+/* Collapsed sidebar */
+.sidebar.collapsed {
+  width: 1px;
+}
+
+/* Hide text when collapsed */
+.sidebar.collapsed h2,
+.sidebar.collapsed nav,
+.sidebar.collapsed .sidebar-footer,
+.sidebar.collapsed .sidebar-info {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+/* Sidebar title styling */
+.sidebar-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+/* ADM logo styling */
+.adm-logo {
+  width: 40px;
+  height: 40px;
+  filter: brightness(0) invert(1); /* Make logo visible on dark background */
+}
+
+/* ADM ASSIST text next to logo */
+.adm-title {
+  font-weight: 600;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* Navbar button */
+.navbar-button {
+  background-color: transparent;
+  color: #e0e0e0;
+  border: none;
+  padding: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.navbar-button:hover {
+  background-color: #334155;
+}
+
+/* Toggle button */
+.sidebar-toggle {
+  position: absolute;
+  top: 20px;
+  left: 250px;
+  z-index: 1000;
+  width: 36px;
+  height: 36px;
+  background-color: #00529b;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  transition: left 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-toggle:hover {
+  background-color: #004785;
+  transform: scale(1.05);
+}
+
+.sidebar.collapsed + .sidebar-toggle {
+  left: 6px;
+  border-radius: 6px;
+}
+
+/* Footer text */
+.sidebar-footer {
+  font-size: 12px;
+  text-align: center;
+  color: #888;
+}
+
+/* 📊 Project Info Section */
+.sidebar-info {
+  font-size: 13px;
+  color: #ccc;
+  margin-top: 30px;
+  border-top: 1px solid #334155;
+  padding-top: 15px;
+}
+
+.sidebar-info h4 {
+  color: #fff;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.sidebar-info ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 10px 0;
+}
+
+.sidebar-info ul li {
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 6px;
+}
+
+.sidebar-info ul li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #00bcd4;
+}
+
+/* Manager ID Styling */
+.sidebar-info p {
+  font-size: 13px;
+  margin: 5px 0 0 0;
+  color: #ddd;
+}
